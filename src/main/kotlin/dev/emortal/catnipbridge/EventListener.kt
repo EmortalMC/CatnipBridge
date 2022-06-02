@@ -14,7 +14,7 @@ import java.time.OffsetDateTime
 
 object EventListener {
 
-    @Subscribe(order = PostOrder.LAST)
+    @Subscribe(order = PostOrder.LATE)
     fun playerChatEvent(e: PlayerChatEvent) {
         if (e.result == PlayerChatEvent.ChatResult.denied()) return
 
