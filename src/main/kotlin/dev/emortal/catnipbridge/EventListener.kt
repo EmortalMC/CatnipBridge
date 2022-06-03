@@ -9,10 +9,15 @@ import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent
 import dev.emortal.catnipbridge.CatnipBridgePlugin.Companion.chatWebhook
 import dev.emortal.catnipbridge.CatnipBridgePlugin.Companion.joinLeaveChannel
 import dev.emortal.catnipbridge.CatnipBridgePlugin.Companion.server
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.awt.Color
 import java.time.OffsetDateTime
 
 object EventListener {
+
+    val discordScope = CoroutineScope(Dispatchers.IO)
 
     @Subscribe(order = PostOrder.LATE)
     fun playerChatEvent(e: PlayerChatEvent) {
@@ -21,31 +26,45 @@ object EventListener {
         val filteredMessage = e.message
             .replace("@", "")
 
-        chatWebhook.executeWebhook(filteredMessage, e.player.username, "https://crafatar.com/renders/head/${e.player.uniqueId}")
+
+
+        discordScope.launch {
+            chatWebhook
+                ?.executeWebhook(filteredMessage, e.player.username, "https://crafatar.com/renders/head/${e.player.uniqueId}?size=256&default=MHF_Question&overlay")
+                ?.onErrorComplete()
+        }
+
     }
 
     @Subscribe
     fun playerJoin(e: PlayerChooseInitialServerEvent) {
-        joinLeaveChannel.sendMessage(
-            EmbedBuilder()
-                .author(e.player.username, null, "https://crafatar.com/avatars/${e.player.uniqueId}")
-                .description("**${e.player.username}** joined the server\n${server.allPlayers.size} online")
-                .timestamp(OffsetDateTime.now())
-                .color(Color.green)
-                .build()
-        )
+        discordScope.launch {
+            joinLeaveChannel
+                ?.sendMessage(
+                    EmbedBuilder()
+                        .author(e.player.username, null, "https://crafatar.com/avatars/${e.player.uniqueId}?size=128&default=MHF_Question&overlay")
+                        .description("**${e.player.username}** joined the server\n${server.allPlayers.size} online")
+                        .timestamp(OffsetDateTime.now())
+                        .color(Color.green)
+                        .build()
+                )
+        }
     }
 
     @Subscribe
     fun playerLeave(e: DisconnectEvent) {
-        joinLeaveChannel.sendMessage(
-            EmbedBuilder()
-                .author(e.player.username, null, "https://crafatar.com/avatars/${e.player.uniqueId}")
-                .description("**${e.player.username}** left the server\n${server.allPlayers.size} online")
-                .timestamp(OffsetDateTime.now())
-                .color(Color.red)
-                .build()
-        )
+        discordScope.launch {
+            joinLeaveChannel
+                ?.sendMessage(
+                    EmbedBuilder()
+                        .author(e.player.username, null, "https://crafatar.com/avatars/${e.player.uniqueId}?size=128&default=MHF_Question&overlay")
+                        .description("**${e.player.username}** left the server\n${server.allPlayers.size} online")
+                        .timestamp(OffsetDateTime.now())
+                        .color(Color.red)
+                        .build()
+                )
+                ?.onErrorComplete()
+        }
     }
 
 }
