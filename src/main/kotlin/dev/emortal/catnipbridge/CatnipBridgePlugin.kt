@@ -16,16 +16,14 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.proxy.ProxyServer
 import dev.emortal.catnipbridge.EventListener.discordScope
-import dev.emortal.catnipbridge.config.ConfigHelper
 import dev.emortal.catnipbridge.config.CatnipBridgeConfig
+import dev.emortal.catnipbridge.config.ConfigHelper
 import kotlinx.coroutines.launch
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
-import java.awt.Color
 import java.nio.file.Path
-import java.time.Duration
 import java.util.logging.Logger
 
 @Plugin(
