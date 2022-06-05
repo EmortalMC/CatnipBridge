@@ -116,6 +116,8 @@ class CatnipBridgePlugin @Inject constructor(private val server: ProxyServer, pr
     @Subscribe
     fun onProxyShutdown(event: ProxyShutdownEvent) {
         catnip.shutdown()
+        chatWebhook = null
+        joinLeaveChannel = null
     }
 
     companion object {
