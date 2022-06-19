@@ -24,7 +24,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
-    implementation("com.mewna:catnip:3.3.4")
+    implementation("com.mewna:catnip:3.3.5")
 }
 
 tasks.withType<KotlinCompile> {
